@@ -1,0 +1,50 @@
+#include <dht11.h> 
+#include <SPI.h>
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+//#include <SHT2x.h>   
+float str1,str2; 
+dht11 DHT11;  
+#define PIN_DHT11 2  
+#define OLED_MOSI   9
+#define OLED_CLK   10
+#define OLED_DC    11
+#define OLED_CS    12
+#define OLED_RESET 13
+Adafruit_SSD1306 display(OLED_MOSI, OLED_CLK, OLED_DC, OLED_RESET, OLED_CS);  
+
+#define NUMFLAKES 10
+#define XPOS 0
+#define YPOS 1
+#define DELTAY 2
+void setup()  
+{  
+  Serial.begin(9600);  
+  Wire.begin();
+  display.begin(SSD1306_SWITCHCAPVCC);
+  display.display();
+  display.clearDisplay();
+}    
+void loop()  
+{
+  //float str1,str2;  
+  display.setTextSize(1);
+  display.setTextColor(WHITE);
+  display.setCursor(0,0);
+  DHT11.read(PIN_DHT11);  
+  Serial.print("Humidity: ");  
+  Serial.println((float)DHT11.humidity, 2);  
+  str1=DHT11.humidity;
+  display.print("Humidity:");
+  display.println(str1);
+  Serial.print("Temperature: ");  
+  Serial.println((float)DHT11.temperature, 2);
+  str2=DHT11.temperature;
+  display.print("Temperature:");
+  display.println(str2); 
+  display.println("Writer:lei and luo");
+  display.display();
+  delay(300);  
+  display.clearDisplay();
+} 
